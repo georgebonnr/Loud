@@ -1,0 +1,11 @@
+{
+    "name": "Expression",
+    "version": "0.0.0",
+    "description": "Expressive Chat",
+    "dependencies": {
+        "socket.io": "latest",
+        "express": "latest",
+        "jade": "latest"
+    },
+    "author": "@georgebonnr"
+}
