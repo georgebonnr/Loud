@@ -9,5 +9,7 @@ app.get("/", function(req, res) {
   res.render("page");
 });
 
+app.use(express.static(__dirname + 'public'));
+
 app.listen(port);
 console.log('Listening on port ' + port);
