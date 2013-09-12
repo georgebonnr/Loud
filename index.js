@@ -11,5 +11,12 @@ app.get("/", function(req, res) {
 
 app.use(express.static(__dirname + 'public'));
 
-app.listen(port);
+var io = require('socket.io').listen(app.listen(4100));
 console.log('Listening on port ' + port);
+
+io.sockets.on('connection', function (clientEnd) {
+  clientEnd.emit('message', { message: 'VERY NICE TO SEE YOU.' });
+  clientEnd.on('send', function (data) {
+    io.sockets.emit('message', data);
+  })
+})
