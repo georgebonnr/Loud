@@ -9,9 +9,9 @@ app.get("/", function(req, res) {
   res.render("page");
 });
 
-app.use(express.static(__dirname + 'public'));
+app.use(express.static(__dirname + '/public'));
 
-var io = require('socket.io').listen(app.listen(4100));
+var io = require('socket.io').listen(app.listen(port));
 console.log('Listening on port ' + port);
 
 io.sockets.on('connection', function (clientEnd) {
