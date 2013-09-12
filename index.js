@@ -16,7 +16,9 @@ console.log('Listening on port ' + port);
 
 io.sockets.on('connection', function (clientEnd) {
   clientEnd.emit('message', { message: 'VERY NICE TO SEE YOU.' });
+  console.log('client connected')
   clientEnd.on('send', function (data) {
     io.sockets.emit('message', data);
+    console.log(data)
   })
 })
