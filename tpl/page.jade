@@ -2,13 +2,27 @@
 html
   head
     title= "LOUD"
-    script(src='/chat.js')
+    link(rel='stylesheet', href='/main.css')
     script(src='/socket.io/socket.io.js')
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
   body
-    #content(style='width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;')
-    .controls
-      | Name: 
-      input#name(style='width:350px;')
-      br
-      input#field(style='width:350px;')
-      input#send(type='button', value='send')
+    .container
+      .header
+        .about ?
+        .logo LOUD
+      .chat
+        .item
+      input(class="name", type="text", placeholder="Enter your name", name="name")
+      input(class="submit", type="text", placeholder="Easy does it...",)  <input class="w-button button" type="submit" value="Submit" data-wait="Please wait..."></input>
+    
+
+
+    //- .controls
+    //-   | Name: 
+    //-   input#name(style='width:350px;')
+    //-   input#namesend(type='button', value='name send')
+    //-   br
+    //-   input#field(style='width:350px;')
+    //-   input#send(type='button', value='send')
+    script(src='/chat.js')
+      
