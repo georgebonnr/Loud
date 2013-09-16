@@ -68,7 +68,9 @@ $(document).ready(function() {
   $('h2').on('click', function() {
     $chats.fadeOut()
     $inputs.fadeOut(400, function () {
-      $('.about').fadeIn()
+      $('.about').fadeIn(400, function() {
+        $('.ribbon').fadeIn(2000)
+      })
     })
     $('h1').addClass('pointer')
     $(this).removeClass('pointer')
@@ -78,6 +80,7 @@ $(document).ready(function() {
     $('.about').fadeOut(400, function() {
       $chats.fadeIn()
       $inputs.fadeIn()
+      $('.ribbon').fadeOut(800)
       $('h1').removeClass('pointer')
       $('h2').addClass('pointer')
     })

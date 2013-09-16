@@ -187,3 +187,11 @@ input[type="button"]:hover{
   background: gray;
   color: #FCFCFC;
 }
+
+.link {
+  color:white;
+}
+
+.ribbon {
+  display: none;
+}
