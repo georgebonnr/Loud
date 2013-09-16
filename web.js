@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var port = 4101;
 var messageList = [];
 var usernames = {}
 
@@ -13,8 +12,7 @@ app.get("/", function(req, res) {
 
 app.use(express.static(__dirname + '/public'));
 
-var io = require('socket.io').listen(app.listen(port));
-console.log('Listening on port ' + port);
+var io = require('socket.io').listen(app.listen(process.env.PORT || 5000));
 
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
@@ -35,8 +33,6 @@ io.sockets.on('connection', function (client) {
     client.emit('message', element)
   });
 
-  console.log('client connected')
-
   client.on('uRequest', function (name, reply) {
     if (usernames[name]) {
       reply('Already taken! Try something else.')
@@ -47,7 +43,6 @@ io.sockets.on('connection', function (client) {
       reply('username added')
       messageList.push(message)
       io.sockets.emit('message', message)
-      console.log(usernames)
     }
   });
 
