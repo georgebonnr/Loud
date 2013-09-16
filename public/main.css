@@ -83,7 +83,7 @@ h2:hover {
   font-size: 14px;
 }
 
-#submit:focus::-webkit-input-placeholder {
+#name:focus::-webkit-input-placeholder, #submit:focus::-webkit-input-placeholder {
     color: transparent;
     outline: none;
 }
@@ -177,4 +177,13 @@ input[type="button"]:hover{
 
 .pointer:hover {
   cursor: pointer;
+}
+
+::selection {
+  color: #FCFCFC;
+  background: gray;
+  }
+  ::-moz-selection {
+  background: gray;
+  color: #FCFCFC;
 }

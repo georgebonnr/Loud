@@ -40,6 +40,7 @@ $(document).ready(function() {
       e.preventDefault;
       server.emit('uRequest', name, function(reply) {
         if (reply !== 'username added') {
+          $('#name').blur()
           $('#name').val('')
           $('#name').attr("placeholder", "Already in use! Try again.");
         } else {
