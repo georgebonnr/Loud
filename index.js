@@ -16,7 +16,10 @@ app.use(express.static(__dirname + '/public'));
 var io = require('socket.io').listen(app.listen(port));
 console.log('Listening on port ' + port);
 
-
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
 
 io.sockets.on('connection', function (client) {
   // var getU = client.get('username', function(err, name) {
