@@ -3,11 +3,9 @@ $(document).ready(function() {
   var messages = [];
   var localUser;
   var server = io.connect('http://localhost:4101');
-  var field = document.getElementById("field");
-  var content = document.getElementById("content");
-  var name = document.getElementById("name");
   var $chats = $(".chat");
-
+  var $inputs = $(".input");
+  var username;
 
 
   // server.on('chats', function (data) {
@@ -23,27 +21,71 @@ $(document).ready(function() {
   // });
 
   server.on('message', function(data) {
-    console.log(data)
+    var $chatItem = $('<div class="item"></div>')
+    if (data.uEvent) {
+      $chatItem.append(data.username + " " + data.message)
+      $chatItem.addClass("uonly");
+    } else {
+      $chatItem.append('<span class="user">' + data.username + ": </span> <br>" + data.message)
+    }
+    if (data.username === username) $chatItem.addClass('match')
+    $chatItem.appendTo($chats)
+    $chats.children().length > 9 && $chats.children().first().remove()
   })
 
-  server.on('newUserNotice', function (data) {
+  $('.namesend').on('click', function(e) {
+    var name = $('#name').val()
+    if (name) {
+      username = name
+      e.preventDefault;
+      server.emit('uRequest', name, function(reply) {
+        if (reply !== 'username added') {
+          $('#name').val('')
+          $('#name').attr("placeholder", "Already in use! Try again.");
+        } else {
+          $('#name, .namesend').hide()
+          setTimeout(function() {
+            $('#submit, .send').slideDown('fast')
+          }, 300)
+        }
+        
+      })
+    }
+  })
 
-    window.alert(data.username);
+  $('.send').on('click', function(e) {
+    if (submit.value) {
+      e.preventDefault;
+      // server.emit('newUser', { message: name.value });
+      // var text = $('.field').value().toUpperCase();
+      var text = submit.value.toUpperCase();
+      server.emit('send', text);
+      submit.value = "";
+    }
   });
 
-  $('#namesend').on('click', function(e) {
-    e.preventDefault;
-    server.emit('uRequest', name.value, function(data) {
-      console.log(data)
+  $('h2').on('click', function() {
+    $chats.fadeOut()
+    $inputs.fadeOut(400, function () {
+      $('.about').fadeIn()
+    })
+    $('h1').addClass('pointer')
+    $(this).removeClass('pointer')
+  })
+
+  $('h1').on('click', function() {
+    $('.about').fadeOut(400, function() {
+      $chats.fadeIn()
+      $inputs.fadeIn()
+      $('h1').removeClass('pointer')
+      $('h2').addClass('pointer')
     })
   })
 
-  $('#send').on('click', function(e) {
-    e.preventDefault;
-    // server.emit('newUser', { message: name.value });
-    // var text = $('.field').value().toUpperCase();
-    var text = 'blah blah blah'
-    server.emit('send', text);
-    field.value = "";
+  $(':input').keypress(function(event) {
+    if ( event.which == 13 ) {
+      event.preventDefault();
+      $(':input').trigger("click")
+    }
   });
 });

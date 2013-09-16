@@ -36,7 +36,7 @@ io.sockets.on('connection', function (client) {
 
   client.on('uRequest', function (name, reply) {
     if (usernames[name]) {
-      reply('already taken')
+      reply('Already taken! Try something else.')
     } else {
       var message = {message: ' joined in.', username: name, uEvent: "join"}
       client.set('username', name)
@@ -48,12 +48,16 @@ io.sockets.on('connection', function (client) {
     }
   });
 
-  // client.on('disconnect', function(client) {
-  //   var username = getU
-  //   var message = {message: ' is done.', username: username, uEvent: "leave"}
-  //   messageList.push(message)
-  //   client.broadcast.emit('message', message)
-  // });
+  client.on('disconnect', function() {
+    client.get('username', function(err, name) {
+      if (name) {
+        delete usernames[name]
+        var message = {message: ' is gone.', username: name, uEvent: "leave"}
+        messageList.push(message)
+        client.broadcast.emit('message', message)
+      }
+    })
+  });
 
   client.on('send', function (data) {
     // var chat = message

@@ -1,6 +1,7 @@
 !!!
 html
   head
+    link(href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700' rel='stylesheet' type='text/css')
     title= "LOUD"
     link(rel='stylesheet', href='/main.css')
     script(src='/socket.io/socket.io.js')
@@ -8,14 +9,23 @@ html
   body
     .container
       .header
-        .about ?
-        .logo LOUD
+        h1 LOUD
+        h2(class="pointer") ?
       .chat
-        .item
-      input(class="name", type="text", placeholder="Enter your name", name="name")
-      input(class="submit", type="text", placeholder="Easy does it...",)  <input class="w-button button" type="submit" value="Submit" data-wait="Please wait..."></input>
-    
-
+      .input
+        input(id="name", type="text", placeholder="Enter your name", name="name")
+        input(class="namesend", type="button", value="Submit")
+        input(id="submit", type="text", placeholder="Something on your mind?",)
+        input(class="send", type="button", value="Send")
+      .about
+        p.
+          LOUD is a simple "proof of concept" project to introduce myself to Node, Express, and Sockets.io before I start as a student
+          at Hack Reactor next week.<br> <br>
+          It's just a toy, but hopefully a fun one.<br><br>
+          If you want to get all hoity-toity, you could also say it's a comment on the effect of mass media
+          and social networking on the exchange of ideas.<br><br>
+          If you'd like to HAVE A NICE, QUIET CONVERSATION about , please feel free to fork this project or drop me a line at my Github. Thanks!<br>
+        span(class="tag") - George
 
     //- .controls
     //-   | Name: 
@@ -25,4 +35,3 @@ html
     //-   input#field(style='width:350px;')
     //-   input#send(type='button', value='send')
     script(src='/chat.js')
-      
