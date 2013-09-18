@@ -143,6 +143,7 @@ input {
   background-color: black;
   text-align: center;
   text-decoration: none;
+  -webkit-padding-after: 500px;
 }
 
 .send {

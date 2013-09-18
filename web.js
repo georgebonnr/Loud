@@ -2,6 +2,14 @@ var express = require('express');
 var app = express();
 var messageList = [];
 var usernames = {}
+var serverMsgs = ["ANYBODY HERE?", "TRYING TO FIGURE THIS THING OUT.", "FFFFFFFF", "GO RANGERS", "A/S/L", "HELLO?"]
+var serverFakes = ["Boris", "chad", "PastaBot", "frodo", "Heisenberg"]
+var randElement = function(arr){
+  var randIndex = Math.floor(Math.random() * arr.length);
+  return arr[randIndex];
+};
+var randMsg = randElement(serverMsgs)
+var randUsr = randElement(serverFakes)
 
 app.set('views', __dirname + '/tpl');
 app.set('view engine', "jade");
@@ -14,24 +22,23 @@ app.use(express.static(__dirname + '/public'));
 
 var io = require('socket.io').listen(app.listen(process.env.PORT || 5000));
 
+// ADDED for Heroku configuration -- remove to revert to normal websockets config
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
 });
 
 io.sockets.on('connection', function (client) {
-  // var getU = client.get('username', function(err, name) {
-  //     return name
-  //   });
-
-  // var store = function(data, name, uEvent) {
-  //   var message = {message: data, username: name, uEvent: uEvent}
-  //   messageList.push(message)
-  // };
 
   messageList.forEach(function (element) {
     client.emit('message', element)
   });
+
+  setInterval(function() {
+    var message = {message: randMsg, username: randUsr}
+    messageList.push(message)
+    io.sockets.emit('message', message);
+  }, 10000)
 
   client.on('uRequest', function (name, reply) {
     if (usernames[name]) {

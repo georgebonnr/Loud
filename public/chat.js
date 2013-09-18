@@ -1,8 +1,9 @@
 $(document).ready(function() {
 
-  var messages = [];
+  // var messages = [];
   var localUser;
-  var server = io.connect('http://lit-dawn-6982.herokuapp.com/');
+  // var server = io.connect('http://lit-dawn-6982.herokuapp.com/');
+  var server = io.connect('http://localhost:5000')
   var $chats = $(".chat");
   var $inputs = $(".input");
   var username;
@@ -34,7 +35,7 @@ $(document).ready(function() {
   })
 
   $('.namesend').on('click', function(e) {
-    var name = $('#name').val()
+    var name = $('#name').val().chomp()
     if (name) {
       username = name
       e.preventDefault;
@@ -55,11 +56,11 @@ $(document).ready(function() {
   })
 
   $('.send').on('click', function(e) {
-    if (submit.value) {
+    var text = submit.value.chomp().toUpperCase();
+    if (text) {
       e.preventDefault;
       // server.emit('newUser', { message: name.value });
       // var text = $('.field').value().toUpperCase();
-      var text = submit.value.toUpperCase();
       server.emit('send', text);
       submit.value = "";
     }
