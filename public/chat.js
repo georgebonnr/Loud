@@ -9,7 +9,7 @@ $(document).ready(function() {
   // var messages = [];
   var localUser;
   // var server = io.connect('http://lit-dawn-6982.herokuapp.com/');
-  var server = io.connect('http://localhost')
+  var server = io.connect()
   var $chats = $(".chat");
   var $inputs = $(".input");
   var username;
