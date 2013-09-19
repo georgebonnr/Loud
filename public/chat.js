@@ -1,3 +1,9 @@
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, '');
+  };
+}
+
 $(document).ready(function() {
 
   // var messages = [];
@@ -7,6 +13,11 @@ $(document).ready(function() {
   var $chats = $(".chat");
   var $inputs = $(".input");
   var username;
+
+  // setting timer for server fake msg pushes -- custom event listener more reliable than running a server-side setInterval based on connection event. 
+  setInterval(function () {
+    server.emit('tick')
+  }, 15000)
 
 
   // server.on('chats', function (data) {
@@ -35,7 +46,7 @@ $(document).ready(function() {
   })
 
   $('.namesend').on('click', function(e) {
-    var name = $('#name').val().chomp()
+    var name = $('#name').val().trim()
     if (name) {
       username = name
       e.preventDefault;
@@ -45,7 +56,7 @@ $(document).ready(function() {
           $('#name').val('')
           $('#name').attr("placeholder", "Already in use! Try again.");
         } else {
-          $('#name, .namesend').hide()
+          $('#name, .namesend').hide().remove();
           setTimeout(function() {
             $('#submit, .send').slideDown('fast')
           }, 300)
@@ -56,7 +67,7 @@ $(document).ready(function() {
   })
 
   $('.send').on('click', function(e) {
-    var text = submit.value.chomp().toUpperCase();
+    var text = submit.value.trim().toUpperCase();
     if (text) {
       e.preventDefault;
       // server.emit('newUser', { message: name.value });
