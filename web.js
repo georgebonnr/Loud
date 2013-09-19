@@ -1,5 +1,8 @@
 var express = require('express');
-var app = express();
+var io = require('socket.io');
+var app = express()
+  , server = require('http').createServer(app)
+  , io = io.listen(server);
 var messageList = [];
 var usernames = {}
 var serverMsgs = ["HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "WHY DO WE HAVE TO CHOOSE BETWEEN SYRIA AND TWERKING. IT'S LIKE, A FALSE DICHOTOMY, MAN", "HELLO?", "THE PRICE OF ANYTHING IS THE AMOUNT OF LIFE YOU EXCHANGE FOR IT.", "IF WE HAD HAD MORE TIME FOR DISCUSSION WE SHOULD PROBABLY HAVE MADE A GREAT MANY MORE MISTAKES.", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "THX 1138, WHY AREN'T YOU AT YOUR POST?", "HELLO?"]
@@ -29,7 +32,9 @@ app.get("/", function(req, res) {
 
 app.use(express.static(__dirname + '/public'));
 
-var io = require('socket.io').listen(process.env.PORT || 8080);
+server.listen(4101);
+
+// var io = require('socket.io').listen(process.env.PORT || 8080);
 
 // ADDED for Heroku configuration -- remove to revert to normal websockets config
 // io.configure(function () { 
