@@ -1,7 +1,7 @@
 {
-    "name": "Expression",
-    "version": "0.0.0",
-    "description": "Expressive Chat",
+    "name": "LOUD",
+    "version": "0.0.1",
+    "description": "Say it don't spray it.",
     "dependencies": {
         "socket.io": "latest",
         "express": "latest",
