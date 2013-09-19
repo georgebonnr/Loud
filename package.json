@@ -1,6 +1,6 @@
 {
     "name": "LOUD",
-    "version": "0.0.1",
+    "version": "0.0.1-1",
     "description": "Say it don't spray it.",
     "dependencies": {
         "socket.io": "latest",

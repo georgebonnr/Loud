@@ -29,7 +29,7 @@ app.get("/", function(req, res) {
 
 app.use(express.static(__dirname + '/public'));
 
-var io = require('socket.io').listen(app.listen(process.env.PORT || 5000));
+var io = require('socket.io').listen(80);
 
 // ADDED for Heroku configuration -- remove to revert to normal websockets config
 // io.configure(function () { 
