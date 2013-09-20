@@ -1,6 +1,6 @@
 {
     "name": "LOUD",
-    "version": "0.0.1-22",
+    "version": "0.0.1-23",
     "description": "Say it don't spray it.",
     "dependencies": {
         "socket.io": "latest",
@@ -8,7 +8,7 @@
         "jade": "latest"
     },
     "author": "@georgebonnr",
-    "subdomain": "LOUD",
+    "subdomain": "loud",
     "scripts": {
         "start": "node web.js"
     },
