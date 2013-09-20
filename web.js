@@ -103,7 +103,7 @@ io.sockets.on('connection', function (client) {
     client.get('username', function(err, name) {
       if (name) {
         delete usernames[name]
-        var message = {message: ' bowed out.', username: name, uEvent: "leave"}
+        var message = {message: ' left.', username: name, uEvent: "leave"}
         messageList.push(message)
         client.broadcast.emit('message', message)
       }
