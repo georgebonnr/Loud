@@ -4,7 +4,7 @@ var app = express()
 // var io = io.listen(server);
 var messageList = [];
 var usernames = {}
-// var connected = 0;
+var connected = 0;
 var loopRunning = false;
 var serverMsgs = ["HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "WHY DO WE HAVE TO CHOOSE BETWEEN SYRIA AND TWERKING. IT'S LIKE, A FALSE DICHOTOMY, MAN", "HELLO?", "THE PRICE OF ANYTHING IS THE AMOUNT OF LIFE YOU EXCHANGE FOR IT.", "IF WE HAD HAD MORE TIME FOR DISCUSSION WE SHOULD PROBABLY HAVE MADE A GREAT MANY MORE MISTAKES.", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "THX 1138, WHY AREN'T YOU AT YOUR POST?", "HELLO?"]
 var serverFakes = ["Server", "Server", "Server", "Server", "Heisenberg", "Server", "Server", "larr_ellis1", "Server", "Server", "Server", "Server"]
@@ -57,11 +57,12 @@ var loop = function () {
   // console.log(rand + 'til next fake')
   setTimeout(function() {
     pushFake();
-    loop();  
+    connected > 0 && loop();  
   }, rand);
 };
 
 io.sockets.on('connection', function (client) {
+  connected += 1
   setTimeout(function() {
     // pushFake();
     if (!loopRunning) {
@@ -100,7 +101,7 @@ io.sockets.on('connection', function (client) {
   });
 
   client.on('disconnect', function() {
-    // connected -= 1
+    connected -= 1
     client.get('username', function(err, name) {
       if (name) {
         delete usernames[name]
