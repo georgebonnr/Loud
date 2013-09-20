@@ -4,7 +4,8 @@ var app = express()
 // var io = io.listen(server);
 var messageList = [];
 var usernames = {}
-var connected = 0;
+// var connected = 0;
+var loopRunning = false;
 var serverMsgs = ["HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "WHY DO WE HAVE TO CHOOSE BETWEEN SYRIA AND TWERKING. IT'S LIKE, A FALSE DICHOTOMY, MAN", "HELLO?", "THE PRICE OF ANYTHING IS THE AMOUNT OF LIFE YOU EXCHANGE FOR IT.", "IF WE HAD HAD MORE TIME FOR DISCUSSION WE SHOULD PROBABLY HAVE MADE A GREAT MANY MORE MISTAKES.", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "THX 1138, WHY AREN'T YOU AT YOUR POST?", "HELLO?"]
 var serverFakes = ["Server", "Server", "Server", "Server", "Heisenberg", "Server", "Server", "larr_ellis1", "Server", "Server", "Server", "Server"]
 var randRange = function(min, max) {
@@ -51,22 +52,22 @@ var io = require('socket.io').listen(app.listen(4101));
 // }
 
 var loop = function () {
+  loopRunning = true;
   var rand = randRange(15000, 20000);
   // console.log(rand + 'til next fake')
   setTimeout(function() {
     pushFake();
     loop();  
-  }, rand);  
+  }, rand);
 };
 
 io.sockets.on('connection', function (client) {
-  connected += 1
-  if (connected === 1) {
-    setTimeout(function() {
-      pushFake();
+  setTimeout(function() {
+    // pushFake();
+    if (!loopRunning) {
       loop();
-    }, 7000)
-  }
+    }
+  }, 7000)
 
   messageList.forEach(function (element) {
     client.emit('message', element)
@@ -99,7 +100,7 @@ io.sockets.on('connection', function (client) {
   });
 
   client.on('disconnect', function() {
-    connected -= 1
+    // connected -= 1
     client.get('username', function(err, name) {
       if (name) {
         delete usernames[name]
