@@ -51,24 +51,29 @@ var io = require('socket.io').listen(app.listen(4101));
 //     return true;
 // }
 
-var loop = function () {
-  loopRunning = true;
-  var rand = randRange(15000, 20000);
-  // console.log(rand + 'til next fake')
-  setTimeout(function() {
-    pushFake();
-    connected > 0 && loop();  
-  }, rand);
-};
+// Moving away from the loop since connections seem to stay open even after users have exited app -- fixing that will require more research later.
+// var loop = function () {
+//   loopRunning = true;
+//   var rand = randRange(15000, 20000);
+//   // console.log(rand + 'til next fake')
+//   setTimeout(function() {
+//     pushFake();
+//     connected > 0 && loop();  
+//   }, rand);
+// };
 
 io.sockets.on('connection', function (client) {
   connected += 1
+  // setTimeout(function() {
+  //   if (!loopRunning) {
+  //     pushFake();
+  //     loop();
+  //   }
+  // }, 7000)
+
   setTimeout(function() {
-    if (!loopRunning) {
-      pushFake();
-      loop();
-    }
-  }, 7000)
+    pushFake();
+  }, 7000);
 
   messageList.forEach(function (element) {
     client.emit('message', element)
