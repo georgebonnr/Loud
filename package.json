@@ -8,7 +8,7 @@
         "jade": "latest"
     },
     "author": "@georgebonnr",
-    "subdomain": "loudapp",
+    "subdomain": "loud",
     "scripts": {
         "start": "node web.js"
     },
