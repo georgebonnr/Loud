@@ -64,8 +64,8 @@ var loop = function () {
 io.sockets.on('connection', function (client) {
   connected += 1
   setTimeout(function() {
-    // pushFake();
     if (!loopRunning) {
+      pushFake();
       loop();
     }
   }, 7000)
