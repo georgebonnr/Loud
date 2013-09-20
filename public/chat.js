@@ -15,9 +15,9 @@ $(document).ready(function() {
   var username;
 
   // setting timer for server fake msg pushes -- custom event listener more reliable than running a server-side setInterval based on connection event. 
-  setInterval(function () {
-    server.emit('tick')
-  }, 15000)
+  // setInterval(function () {
+  //   server.emit('tick')
+  // }, 15000)
 
 
   // server.on('chats', function (data) {

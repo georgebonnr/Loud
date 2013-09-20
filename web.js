@@ -4,7 +4,8 @@ var app = express()
 // var io = io.listen(server);
 var messageList = [];
 var usernames = {}
-var serverMsgs = ["HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "WHY DO WE HAVE TO CHOOSE BETWEEN SYRIA AND TWERKING. IT'S LIKE, A FALSE DICHOTOMY, MAN", "HELLO?", "THE PRICE OF ANYTHING IS THE AMOUNT OF LIFE YOU EXCHANGE FOR IT.", "IF WE HAD HAD MORE TIME FOR DISCUSSION WE SHOULD PROBABLY HAVE MADE A GREAT MANY MORE MISTAKES.", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "THX 1138, WHY AREN'T YOU AT YOUR POST?", "HELLO?"]
+var connected = 0;
+var serverMsgs = ["HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "WHY DO WE HAVE TO CHOOSE BETWEEN SYRIA AND TWERKING. IT'S LIKE, A FALSE DICHOTOMY, MAN", "HELLO?", "THE PRICE OF ANYTHING IS THE AMOUNT OF LIFE YOU EXCHANGE FOR IT.", "IF WE HAD HAD MORE TIME FOR DISCUSSION WE SHOULD PROBABLY HAVE MADE A GREAT MANY MORE MISTAKES.", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "HELLO?", "THX 1138, WHY AREN'T YOU AT YOUR POST?", "HELLO?"]
 var serverFakes = ["Server", "Server", "Server", "Server", "Heisenberg", "Server", "Server", "larr_ellis1", "Server", "Server", "Server", "Server"]
 var randRange = function(min, max) {
   return (Math.floor(Math.random() * (max - min + 1)) + min)
@@ -41,34 +42,48 @@ var io = require('socket.io').listen(app.listen(4101));
 //   io.set("polling duration", 10); 
 // });
 
+// var isEmpty = function (obj) {
+//     for(var key in obj) {
+//         if(obj.hasOwnProperty(key))
+//             return false;
+//     }
+//     return true;
+// }
+
+var loop = function () {
+  var rand = randRange(15000, 20000);
+  // console.log(rand + 'til next fake')
+  setTimeout(function() {
+    pushFake();
+    loop();  
+  }, rand);  
+};
+
 io.sockets.on('connection', function (client) {
+  connected += 1
+  if (connected === 1) {
+    setTimeout(function() {
+      pushFake();
+      loop();
+    }, 7000)
+  }
 
   messageList.forEach(function (element) {
     client.emit('message', element)
   });
 
   // Originally was using recursive loop to generate random fake msgs, but listening for events proved more reliable.
-  // var loop = function () {
-  //     var rand = randRange(15000, 30000);
-  //     console.log(rand + 'til next fake')
-  //     setTimeout(function() {
-  //       pushFake();
-  //       loop();  
-  //     }, rand);
-  // };
 
   // Set initial fake msg to fire soon in case server has been asleep
-  setTimeout(function() {
-    pushFake();
-  }, 7000)
 
-  client.on('tick', function() {
-    var rand = randRange(5000, 15000)
-    console.log(rand + 'til next fake')
-    setTimeout(function() {
-      pushFake();
-    }, rand)
-  })
+
+  // client.on('tick', function() {
+  //   var rand = randRange(5000, 15000)
+  //   console.log(rand + 'til next fake')
+  //   setTimeout(function() {
+  //     pushFake();
+  //   }, rand)
+  // })
 
   client.on('uRequest', function (name, reply) {
     if (usernames[name]) {
@@ -84,10 +99,11 @@ io.sockets.on('connection', function (client) {
   });
 
   client.on('disconnect', function() {
+    connected -= 1
     client.get('username', function(err, name) {
       if (name) {
         delete usernames[name]
-        var message = {message: ' is gone.', username: name, uEvent: "leave"}
+        var message = {message: ' bowed out.', username: name, uEvent: "leave"}
         messageList.push(message)
         client.broadcast.emit('message', message)
       }
