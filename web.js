@@ -1,7 +1,5 @@
 var express = require('express');
 var app = express()
-// var server = require('http').createServer(app)
-// var io = io.listen(server);
 var messageList = [];
 var usernames = {}
 var connected = 0;
@@ -35,41 +33,8 @@ app.use(express.static(__dirname + '/public'));
 
 var io = require('socket.io').listen(app.listen(4101));
 
-// var io = require('socket.io').listen(process.env.PORT || 8080);
-
-// ADDED for Heroku configuration -- remove to revert to normal websockets config
-// io.configure(function () { 
-//   io.set("transports", ["xhr-polling"]); 
-//   io.set("polling duration", 10); 
-// });
-
-// var isEmpty = function (obj) {
-//     for(var key in obj) {
-//         if(obj.hasOwnProperty(key))
-//             return false;
-//     }
-//     return true;
-// }
-
-// Moving away from the loop since connections seem to stay open even after users have exited app -- fixing that will require more research later.
-// var loop = function () {
-//   loopRunning = true;
-//   var rand = randRange(15000, 20000);
-//   // console.log(rand + 'til next fake')
-//   setTimeout(function() {
-//     pushFake();
-//     connected > 0 && loop();  
-//   }, rand);
-// };
-
 io.sockets.on('connection', function (client) {
   connected += 1
-  // setTimeout(function() {
-  //   if (!loopRunning) {
-  //     pushFake();
-  //     loop();
-  //   }
-  // }, 7000)
 
   setTimeout(function() {
     pushFake();
@@ -78,19 +43,6 @@ io.sockets.on('connection', function (client) {
   messageList.forEach(function (element) {
     client.emit('message', element)
   });
-
-  // Originally was using recursive loop to generate random fake msgs, but listening for events proved more reliable.
-
-  // Set initial fake msg to fire soon in case server has been asleep
-
-
-  // client.on('tick', function() {
-  //   var rand = randRange(5000, 15000)
-  //   console.log(rand + 'til next fake')
-  //   setTimeout(function() {
-  //     pushFake();
-  //   }, rand)
-  // })
 
   client.on('uRequest', function (name, reply) {
     if (usernames[name]) {
@@ -118,15 +70,12 @@ io.sockets.on('connection', function (client) {
   });
 
   client.on('send', function (data) {
-    // var chat = message
-    // console.log('before get ' + message)
     client.get('username', function(err, name) {
       var message = {message: data, username: name}
       messageList.push(message)
       io.sockets.emit('message', message);
       messageList.length > 10 && messageList.shift();
       // NOBODY WANTS TO SHOUT ABOUT YESTERDAY'S NEWS.
-      // console.log(messageList.length)
     });
   });
 })
