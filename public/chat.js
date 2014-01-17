@@ -6,31 +6,11 @@ if (!String.prototype.trim) {
 
 $(document).ready(function() {
 
-  // var messages = [];
   var localUser;
-  // var server = io.connect('http://lit-dawn-6982.herokuapp.com/');
   var server = io.connect();
   var $chats = $(".chat");
   var $inputs = $(".input");
   var username;
-
-  // setting timer for server fake msg pushes -- custom event listener more reliable than running a server-side setInterval based on connection event. 
-  // setInterval(function () {
-  //   server.emit('tick')
-  // }, 15000)
-
-
-  // server.on('chats', function (data) {
-  //   $chats.html(" ")
-  //   for (var i=0; i < data.length; i++) {
-  //     var $chatItem = $('<div class="chatItem"></div>')
-  //     console.log(data[i])
-  //     var usernameHTML = data[i].username
-  //     var message = data[i].message
-  //     $chatItem.append(usernameHTML + " " + message)
-  //     $chats.append($chatItem)
-  //   }
-  // });
 
   server.on('message', function(data) {
     var $chatItem = $('<div class="item"></div>')
@@ -70,8 +50,6 @@ $(document).ready(function() {
     var text = submit.value.trim().toUpperCase();
     if (text) {
       e.preventDefault;
-      // server.emit('newUser', { message: name.value });
-      // var text = $('.field').value().toUpperCase();
       server.emit('send', text);
       submit.value = "";
     }
